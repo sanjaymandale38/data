@@ -1,0 +1,69 @@
+{
+	"name": "dataflow2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "INSU1",
+						"type": "DatasetReference"
+					},
+					"name": "INS1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Json2",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "Json1",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Northeast"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          age as string,",
+				"          sex as string,",
+				"          bmi as string,",
+				"          children as string,",
+				"          smoker as string,",
+				"          region as string,",
+				"          charges as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> INS1",
+				"INS1 split(equals(region, 'northeast'),",
+				"     equals(region, 'northwest'),",
+				"     disjoint: false) ~> Northeast@(northeast, northwest)",
+				"Northeast@northeast sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1",
+				"Northeast@northwest sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink2"
+			]
+		}
+	}
+}

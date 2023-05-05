@@ -1,0 +1,9 @@
+{
+	"name": "sanjaydiscover",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "8f9c6578-4755-443c-82fa-23ded473f842",
+		"tenantId": "e8a3fc32-9981-437b-b08a-ef937bf4ba74"
+	}
+}
